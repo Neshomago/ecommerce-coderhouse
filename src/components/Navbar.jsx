@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 import { CartWidget } from './CartWidget'
 
 export const Navbar = () => {
@@ -8,17 +9,32 @@ export const Navbar = () => {
             <div className="d-flex">
                 <div className="p-1">
                     <img src="../src/assets/market.png" alt="Logo" width="30" height="30" className="d-inline-block align-text-top" />
-                    <a className="navbar-brand text-light" href="#">MaxiKiosko</a>
+                    <a className="navbar-brand text-light" href="/">MaxiKiosko</a>
+                </div>
+                <></>
+                <div className='p-1'>
+                    <a role="button" className="btn btn-secondary" href='/catalogo'>Catálogo</a>
                 </div>
                 <div className="p-1">
-                    <ul className="navbar-nav me-auto mb-2 mb-xl-0">
-                        <li className='nav-item'><a className="nav-link text-light" href="#">Caramelos</a></li>
-                        <li className='nav-item'><a className="nav-link text-light" href="#">Chocolates</a></li>
-                        <li className='nav-item'><a className="nav-link text-light" href="#">Bebidas</a></li>
-                    </ul>
+                        <Link to={`categoria/${"men"}`}>
+                            <button className="btn btn-secondary">Men</button>
+                        </Link>
+                        <Link to={`categoria/${"women"}`}>
+                            <button className="btn btn-secondary">Women</button>
+                        </Link>
+                        <Link to={`categoria/${"jewelery"}`}>
+                            <button className="btn btn-secondary">Jewelery</button>
+                        </Link>
+                        <Link to={`categoria/${"electronics"}`}>
+                            <button className="btn btn-secondary">Electronics</button>
+                        </Link>
                 </div>
                 <div className="p-1">
-                    <CartWidget></CartWidget>
+                    <div className='btn btn-secondary'>
+                        <Link to={'/cart'}>
+                            <CartWidget></CartWidget>
+                        </Link>
+                    </div>
                 </div>
             </div>
         </div>
