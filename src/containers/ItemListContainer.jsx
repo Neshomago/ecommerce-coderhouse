@@ -1,27 +1,32 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
-import { ItemDetail } from '../components/ItemDetail'
 import { ItemList } from '../components/itemList'
+import { collection, getDocs, getFirestore} from "firebase/firestore";
+import LoadingSpinner from '../components/LoadingSpinner';
 
 export const ItemListContainer = () => {
   const { categoria } = useParams();
-  
-  const API = 'https://fakestoreapi.com/products'
-
-  const getProductos = async () => {
-    const response = await fetch(API);
-    const data = await response.json();
-    return data;
-  }
 
   const [productos, setProductos] = useState([]);
+  const [loading, setLoading] = useState(false);
+
 
   useEffect(() => {
-    getProductos()
-    .then((item) => setProductos(item));
-  },[])
-
+        const db = getFirestore();
+        const itemsCollection = collection(db, "tienda");
+        setLoading(true);
+        getDocs(itemsCollection).then((snapshot) => {
+          const docs = snapshot.docs.map((doc) => (
+                {...doc.data(),
+                  id: doc.id,
+                }
+              ));
+          setLoading(false);
+          setProductos(docs);
+        });
+      }, []
+  );
 
   const filtrado = (array, categoria) => {
     let listaFiltrada = [];
@@ -39,27 +44,36 @@ export const ItemListContainer = () => {
     return listaFiltrada;
   }
 
-  if (categoria === undefined) {
-      return (
-      <section>
-          { 
-            productos == [] ? (
-              <div class="d-flex justify-content-center">
-              <div class="spinner-border" role="status">
-                <span class="visually-hidden">Loading...</span>
-              </div>
-              </div>
-            ) : (<div></div>)
-            }
-          <ItemList  className='flex-wrap p-2' productos={productos}/>
+  return (
+    <section className='container-fluid mb-3' style={{marginTop:'5em'}}>
+    <div className='container'>
+        <div className='row align-items-center g-3'>
+          {
+            categoria === undefined ?
+              loading ? <LoadingSpinner /> : 
+              (
+                <>
+                <img src='../src/assets/images-1.png' style={{width: '100%'}} />
+                <h2>Productos del catálogo</h2>
+                <ItemList productos={productos}/>
+                </>
+              )
+            :
+              categoria
+                  ? (
+                    <>
+                    <h2>Productos de categoría {categoria}</h2>
+                    <ItemList productos={filtrado(productos, categoria)} />
+                    </>
+                    )
+                  : (
+                    <>
+                    <h2>Productos de categoría {categoria}</h2>
+                    <ItemList productos={productos}/>
+                    </>
+                  )
+          }
+        </div>
+    </div>
     </section> )
-    } else {
-      //let categoryFilter = categorias.filter((x) => x === categoria)
-      console.log(categoria);
-      console.log(filtrado(productos));
-      return (
-        <section>
-              {categoria ? <ItemList className='flex-wrap p-2' productos={filtrado(productos, categoria)} /> : <ItemList  className='flex-wrap p-2' productos={productos}/>}
-        </section> )
-  }
 }

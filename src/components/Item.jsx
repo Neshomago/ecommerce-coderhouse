@@ -1,39 +1,41 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { Link } from 'react-router-dom'
+import { Contador } from './Contador'
 
-export const Item = ({id, title, category, image, description, rating, price}) => {
+
+export const Item = ({id, title, category, image, rating, price, stock}) => {
+
+  const productoToCart = {
+    id: id,
+    image: image,
+    title: title,
+    price: price,
+    stock: stock,
+    quantity: ''
+  }
+
   return (
-    <>
-        <div className='d-flex p-2' style={{width: '30%'}} key={id}>
-          <div className='card text-center'>
-              <img className='card-img-top' src={image}/>
+        <div key={productoToCart.id} className='col'>
+          <div className='card text-center shadow-sm' style={{width: '18rem', border: 'none'}}>
+              <img className='card-img-top' src={productoToCart.image} style={{maxHeight:'250px', width:'12rem', alignSelf:'center'}}/>
               <div className='card-body'>
-                  <h5 className='card-title'>{title}</h5>
-                  <h6 className='card-subtitle'>{price}</h6>
-                  <p className='card-text'>{description}</p>
-                  <Link to={`/item/${id}`}>Más detalles</Link>
+                  <h5 className='card-title'>{productoToCart.title}</h5>
+                  <h4 className='card-subtitle'>$ {productoToCart.price}</h4>
+                  <Link to={`/item/${productoToCart.id}`}>Más detalles</Link>
               </div>
-              <div className='card-footer text-muted'>
-                  Rating {rating.rate}⭐ | Categoria {category}
+              <div className='justify-content-center'>
+                    <div className='m-2'><span className='badge badge-pill bg-success'>Stock disponible:</span> {productoToCart.stock}</div>
+                    <Contador stock={productoToCart.stock}
+                      id={productoToCart.id}
+                      price={productoToCart.price}
+                      title={productoToCart.title}
+                      image={productoToCart.image}
+                    />
+              </div>
+              <div className='card-footer'>
+                  {rating} ⭐ | 🛍️ {category}
               </div>
           </div>
         </div>
-    </>
   )
 }
-
-/*             <div key={item.id} className='d-flex p-2'>
-              <div className='card text-center'>
-                  <img className='card-img-top' src={item.image}/>
-                  <div className='card-body'>
-                    <div className='card-header'>
-                        <h1>{item.title}</h1>
-                    </div>
-                    <p>{item.description}</p>
-                    <div>
-                      <h3>{item.price}</h3>
-                    </div>
-                    <button >Ver detalles</button>
-                  </div>
-              </div>
-            </div> */

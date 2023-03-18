@@ -4,18 +4,16 @@ import { CartWidget } from './CartWidget'
 
 export const Navbar = () => {
   return (
-    <nav className="navbar w-100 navbar-expand-xl navbar-light sticky-menu bg-secondary">
-        <div className="container-fluid">
-            <div className="d-flex">
-                <div className="p-1">
-                    <img src="../src/assets/market.png" alt="Logo" width="30" height="30" className="d-inline-block align-text-top" />
-                    <a className="navbar-brand text-light" href="/">MaxiKiosko</a>
+    <nav className="navbar navbar-light w-100 fixed-top bg-secondary">
+            <div className="d-flex flex-md-row align-items-center px-md-4">
+                <div className="p-2">
+                    <Link className="navbar-brand text-light" to={"/"}>
+                    <img src="https://cdn-icons-png.flaticon.com/512/1040/1040254.png" alt="Logo" width="30" className="d-inline-block align-top p-1"/>
+                        MaxiKiosko
+                    </Link>
                 </div>
-                <></>
-                <div className='p-1'>
-                    <a role="button" className="btn btn-secondary" href='/catalogo'>Catálogo</a>
-                </div>
-                <div className="p-1">
+                <nav className="p-2">
+                    <Link className="btn btn-secondary" to={`/catalogo`}>Catálogo</Link>
                         <Link to={`categoria/${"men"}`}>
                             <button className="btn btn-secondary">Men</button>
                         </Link>
@@ -28,8 +26,8 @@ export const Navbar = () => {
                         <Link to={`categoria/${"electronics"}`}>
                             <button className="btn btn-secondary">Electronics</button>
                         </Link>
-                </div>
-                <div className="p-1">
+                </nav>
+                <div className="ml-auto p-2">
                     <div className='btn btn-secondary'>
                         <Link to={'/cart'}>
                             <CartWidget></CartWidget>
@@ -37,7 +35,6 @@ export const Navbar = () => {
                     </div>
                 </div>
             </div>
-        </div>
     </nav>
   )
 }
